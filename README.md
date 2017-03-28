@@ -39,6 +39,13 @@ Menu Inventario
 
 Menu mascota
 
+Inventario: 
+
+Agregar
+Actualizar
+Eliminar
+Buscar
+
 
 
 
