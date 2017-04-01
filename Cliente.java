@@ -1,13 +1,14 @@
 
 public class Cliente 
 {
-	private int cedula;
+	private int cedula; 
 	private String nombre;
 	private String apellido;
 	private String direccion;
 	
 	public Cliente ()
-	{}
+	{
+	}
 	
 	public Cliente (int ced, String nom, String ape, String dir)
 	{
