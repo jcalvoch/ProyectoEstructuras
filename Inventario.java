@@ -168,8 +168,7 @@ public class Inventario {
 					if((producto.getNombre().contains(datos) || producto.getCodigo().contains(datos))){
 						System.out.println("Descripcion: "+producto.getNombre()+", \nCodigo: "+producto.getCodigo()+", \nPrecio:"+producto.getPrecio()+", Cantidad: "+estante.cantidadProducto()+"\n");
 					}
-					
-					linea = estante.siguienteCola(frente).getNombre()+"-"+estante.siguienteCola(frente).getCodigo()+"-"+estante.siguienteCola(frente).getTipo()+"-"+estante.siguienteCola(frente).getPrecio();
+								
 					frente++;
 				}
 			}
