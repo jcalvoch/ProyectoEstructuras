@@ -175,17 +175,17 @@ public class MenuInicial {
 				switch(opcion){
 				
 				case 1:
-					//this.Inventario();
+					this.Inventario();
 					
 					continuar();
 					break;
 				case 2:
-					//this.Clientes();
+					this.Clientes();
 					
 					continuar();
 					break;
 				case 3:
-					//this.Citas();
+					this.Citas();
 					
 					continuar();
 					break;
@@ -194,7 +194,7 @@ public class MenuInicial {
 					
 					break;
 				case 5:
-					//this.Facturar();
+					this.Facturar();
 					
 					break;
 									
@@ -231,17 +231,17 @@ public class MenuInicial {
 				switch(opcion){
 				
 				case 1:
-					//this.Inventario();
+					this.Inventario();
 					
 					continuar();
 					break;
 				case 2:
-					//this.Clientes();
+					this.Clientes();
 					
 					continuar();
 					break;
 				case 3:
-					//this.Citas();
+					this.Citas();
 					
 					continuar();
 					break;
@@ -280,12 +280,12 @@ public class MenuInicial {
 				switch(opcion){
 				
 				case 1:
-					//this.Inventario();
+					this.Inventario();
 					
 					continuar();
 					break;
 				case 2:
-					//this.Clientes();
+					this.Clientes();
 					
 					continuar();
 					break;
@@ -296,7 +296,7 @@ public class MenuInicial {
 					break;
 				
 				case 4:
-					//this.Facturar();
+					this.Facturar();
 					
 					break;
 									
