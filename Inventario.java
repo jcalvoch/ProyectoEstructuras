@@ -12,7 +12,7 @@ public class Inventario {
 	List<ColaProductos> almacenTemp = new ArrayList<>();
 	ListIterator<ColaProductos> iterator;
 	ListIterator<ColaProductos> iter;
-	ColaProductos estante;
+	ColaProductos estante, estanteTemp, auxEstante;
 	Producto producto, aux;
 	int frente,fin;
 	
@@ -45,6 +45,7 @@ public class Inventario {
 		int opcion;
 		
 		try{
+			this.almacen = new ArrayList<>();
 			this.almacen = cargarTxt();
 			
 			System.out.println(String.format("%30s", "Inventario"));
@@ -58,22 +59,19 @@ public class Inventario {
 				
 				case 1:
 					this.ingresarProducto();
-					
 					continuar();
 					break;
 				case 2:
 					this.eliminarProducto();
-					
 					continuar();
 					break;
 				case 3:
-					this.buscarProductos();
-					
+					this.imprimirProductos();
 					continuar();
 					break;
 				case 4:
 					this.verInventario();
-					
+					continuar();
 					break;
 				case 5:
 					break;
@@ -92,20 +90,17 @@ public class Inventario {
 	public void ingresarProducto(){
 		try{
 			
-			estante = new ColaProductos();
-			producto = new Producto();
-						
+			auxEstante = new ColaProductos();
 			
+						
 			System.out.println("Digite el codigo del articulo: ");
 			valor = in.nextLine();
 			
-			
-			
 			if (buscarEstante(valor)){
 				
-				System.out.println("Codigo encontrado.....\n");
+				producto = new Producto();
 				
-				estante = this.almacen.get(obtenerNumeracionEstante(valor));//obtiene el estante(cola de productos) que ya existe para agregar uno mas de este tipo
+				System.out.println("Codigo encontrado.....\n");
 				
 				producto.setCodigo(valor);
 				
@@ -118,14 +113,19 @@ public class Inventario {
 				System.out.println("Digite el precio del articulo: ");
 				producto.setPrecio(in.nextDouble());
 				
-				estante.Insertar(producto);
+				auxEstante = this.almacen.get(obtenerNumeracionEstante(valor));
 				
-				this.almacen.set(obtenerNumeracionEstante(valor),estante);
+				auxEstante.Insertar(producto);
+				
+				this.almacen.set(obtenerNumeracionEstante(valor),auxEstante);
 				guardarTxt();
 				
 				
 			}else{
 				
+				producto = new Producto();
+				
+				auxEstante = new ColaProductos();
 				producto.setCodigo(valor);
 				System.out.println("Nuevo codigo ingresado, creando nuevo codigo en la base de datos.....\n");
 				
@@ -135,12 +135,20 @@ public class Inventario {
 				System.out.println("Digite el tipo de articulo: ");
 				producto.setTipo(in.nextLine());
 					
-				System.out.println("Digite el precio del articulo: ");
+				System.out.println("Digite el precio del articulo en $: ");
 				producto.setPrecio(in.nextDouble());
 				
-				estante.Insertar(producto); //crea un nuevo estante para este tipo de articulo y agrega el articulo
+				System.out.println("Digite el peso del articulo en gramos: ");
+				producto.setPeso(in.nextDouble());
 				
-				this.almacen.add(estante); //Guarda el estante(cola) en el almacen(arraylist de colas)
+				System.out.println("Digite la cantidad de articulos: ");
+				int cantidad = in.nextInt();
+				
+				for(int i=cantidad; i>0;i--){
+					auxEstante.Insertar(producto); //crea un nuevo estante para este tipo de articulo y agrega la cantidad de articulos
+				}
+				
+				this.almacen.add(auxEstante); //Guarda el estante(cola) en el almacen(arraylist de colas)
 				
 				guardarTxt();
 			}
@@ -155,14 +163,13 @@ public class Inventario {
 		producto = new Producto();
 		
 		try{
-			this.almacen = cargarTxt();
 			System.out.println("Digite el codigo o el nombre del articulo: ");
 			datos = in.nextLine();
 		
 			if (buscarProducto(datos)){
 				producto = this.almacen.get(obtenerNumeracionEstante(datos)).Eliminar();
 				actualizarTxt();
-				System.out.println(producto.getNombre()+" eliminado exitosamente"+". Cantidad total del articulos: "+obtenerEstante(datos).cantidadProducto());
+				System.out.println("Articulo: "+producto.getNombre()+", eliminado exitosamente"+". Cantidad restante: "+obtenerEstante(datos).cantidadProducto()+"\n");
 				
 			}else{
 				System.out.println("El articulo no existe, o tiene un codigo/nombre diferente");
@@ -173,26 +180,25 @@ public class Inventario {
 		}
 	}
 	
-	public void buscarProductos(){
+	public void imprimirProductos(){
 		
 		estante = new ColaProductos();
 		
 		try{
-			System.out.println("Ingrese el codigo o la descripcion del producto: ");
+			System.out.println("Ingrese el nombre, codigo o el tipo de producto: ");
 			datos = in.nextLine();
+			this.almacen = new ArrayList<>();
+			this.almacen = cargarTxt();
 			iterator = this.almacen.listIterator();
+			
 			while(iterator.hasNext()){
 				estante = iterator.next();
 				producto = estante.FrenteCola();
-				frente = estante.frente;
-				fin = estante.fin;
-				while(frente<=fin){
-					if((producto.getNombre().toLowerCase().contains(datos.toLowerCase()) || producto.getCodigo().toLowerCase().contains(datos.toLowerCase()))){
-						System.out.println("Nombre: "+producto.getNombre()+", Codigo: "+producto.getCodigo()+", Precio:"+producto.getPrecio()+", Cantidad: "+estante.cantidadProducto());
-					}
-					
-					frente++;
+				
+				if((producto.getNombre().toLowerCase().contains(datos.toLowerCase()) || producto.getTipo().toLowerCase().contains(datos.toLowerCase())|| producto.getCodigo().toLowerCase().contains(datos.toLowerCase()))){
+						System.out.println("Nombre: "+producto.getNombre()+", Codigo: "+producto.getCodigo()+", Precio: $"+producto.getPrecio()+", Peso: "+producto.getPeso()+"kg"+", Cantidad: "+estante.cantidadProducto());
 				}
+					
 			}
 		}catch(Exception e){
 			System.out.println(e.toString());
@@ -203,67 +209,85 @@ public class Inventario {
 	public boolean buscarEstante(String data){
 		 aux = new Producto();
 		 iterator = this.almacen.listIterator();
+		 boolean encontrado = false;
 		try{
-			while(iterator.hasNext()){
+			while(iterator.hasNext() && !encontrado){
 				aux = iterator.next().FrenteCola();
-				return (aux.getCodigo().toLowerCase().equals(data.toLowerCase()));
+				encontrado = (aux.getCodigo().toLowerCase().equals(data.toLowerCase()));
 			}
 			
 		}catch (Exception e){
 			System.out.println(e.toString());
 		}
-		return false;
+		return encontrado;
 		
 	}
 
 	public boolean buscarProducto(String data){
 		 aux = new Producto();
+		 auxEstante = new ColaProductos();
 		 iterator = this.almacen.listIterator();
+		 boolean encontrado = false;
 		try{
+			
 			while(iterator.hasNext()){
-				aux = iterator.next().FrenteCola();
-				return (aux.getNombre().toLowerCase().equals(data.toLowerCase()) || aux.getCodigo().toLowerCase().equals(data.toLowerCase()));
+				auxEstante = iterator.next();
+				frente = auxEstante.frente;
+				fin = auxEstante.fin;
+				aux = auxEstante.siguienteCola(frente);
+				
+				while(frente<=fin && !encontrado){
+					frente++;
+					if (aux.getNombre().toLowerCase().equals(data.toLowerCase()) || aux.getCodigo().toLowerCase().equals(data.toLowerCase())){
+						encontrado = true;
+						
+					}
+					aux = auxEstante.siguienteCola(frente);
+					
+				}
+				
 			}
 			
+		
 		}catch (Exception e){
 			System.out.println(e.toString());
 		}
-		return false;
+		return encontrado;
 		
 	}
 	
 	public int obtenerNumeracionEstante(String data){
-		 producto = new Producto();
-		 estante = new ColaProductos();
+		 
+		 auxEstante = new ColaProductos();
 		 iterator = this.almacen.listIterator();
 		 
 		try{
 			while(iterator.hasNext()){
-				estante = iterator.next();
+				auxEstante = iterator.next();
 				 
-				if (estante.FrenteCola().getNombre().toLowerCase().equals(data.toLowerCase()) || estante.FrenteCola().getCodigo().toLowerCase().equals(data.toLowerCase())){
-					return this.almacen.indexOf(estante);
+				if (auxEstante.FrenteCola().getNombre().toLowerCase().equals(data.toLowerCase()) || auxEstante.FrenteCola().getCodigo().toLowerCase().equals(data.toLowerCase())){
+					return this.almacen.indexOf(auxEstante);
 				}
 			}
 			
 		}catch (Exception e){
 			System.out.println(e.toString());
 		}
-		return this.almacen.indexOf(estante);
+		return this.almacen.indexOf(auxEstante);
 		
 	}
 	
 	public ColaProductos obtenerEstante(String data){
-		 producto = new Producto();
-		 estante = new ColaProductos();
+		 
+		auxEstante = new ColaProductos();
 		 iterator = this.almacen.listIterator();
 		 
 		try{
 			while(iterator.hasNext()){
-				estante = iterator.next();
+				auxEstante = iterator.next();
 				 
-				if (estante.FrenteCola().getCodigo().toLowerCase().equals(data.toLowerCase())){
-					return estante;
+				if (auxEstante.FrenteCola().getCodigo().toLowerCase().equals(data.toLowerCase())){
+					return auxEstante;
 				}
 			}
 			
@@ -295,7 +319,7 @@ public class Inventario {
 					frente = estante.frente;
 					fin = estante.fin;
 					while(frente<=fin){//recorre todos los productos dentro de los estantes
-						linea = estante.siguienteCola(frente).getNombre()+"-"+estante.siguienteCola(frente).getCodigo()+"-"+estante.siguienteCola(frente).getTipo()+"-"+estante.siguienteCola(frente).getPrecio()+separadorLineas;
+						linea = estante.siguienteCola(frente).getNombre()+"-"+estante.siguienteCola(frente).getCodigo()+"-"+estante.siguienteCola(frente).getTipo()+"-"+estante.siguienteCola(frente).getPrecio()+"-"+estante.siguienteCola(frente).getPeso()+separadorLineas;
 						bw.write(linea);
 						bw.flush();
 						frente++;
@@ -350,7 +374,7 @@ public class Inventario {
 				frente = estante.frente;
 				fin = estante.fin;
 				while(frente<=fin){
-					linea = estante.siguienteCola(frente).getNombre()+"-"+estante.siguienteCola(frente).getCodigo()+"-"+estante.siguienteCola(frente).getTipo()+"-"+estante.siguienteCola(frente).getPrecio()+separadorLineas;
+					linea = estante.siguienteCola(frente).getNombre()+"-"+estante.siguienteCola(frente).getCodigo()+"-"+estante.siguienteCola(frente).getTipo()+"-"+estante.siguienteCola(frente).getPrecio()+"-"+estante.siguienteCola(frente).getPeso()+separadorLineas;
 					bw.write(linea);
 					bw.flush();
 					frente++;
@@ -359,8 +383,6 @@ public class Inventario {
 				
 			System.out.println("commit bueno");
 				
-			
-			
 			
 		}catch(IOException e){
 			
@@ -386,40 +408,40 @@ public class Inventario {
 	
 	public List<ColaProductos> cargarTxt() throws Exception{
 		archivo = new File(dir,nombreArchivo);
-		almacenTemp = new ArrayList<>();
-		String codigo;
+		estanteTemp = new ColaProductos();
+		String codigo = "";
 		try{
 			if(archivo.exists()){
-				
-				
-				
 				
 				fr = new FileReader(archivo);
 				br = new BufferedReader(fr);
 				
 				if ((linea = br.readLine())!= null && (!linea.isEmpty())){
 				
-					
 					while(linea!= null){
 						
 						producto = new Producto();
-						codigo = producto.getCodigo();
+						estante = new ColaProductos();
 						String [] valores = linea.split("-");
 						producto.setNombre(valores[0]);
 						producto.setCodigo(valores[1]);
 						producto.setTipo(valores[2]);
 						producto.setPrecio(Double.parseDouble(valores[3]));
-						estante = new ColaProductos();
+						producto.setPeso(Double.parseDouble(valores[4]));
 						estante.Insertar(producto);
 						
 						linea = br.readLine();
-						
+	
 						if(producto.getCodigo().equals(codigo)){
-							this.almacen.get(obtenerNumeracionEstante(codigo)).Insertar(producto);
+							estanteTemp = this.almacen.get(obtenerNumeracionEstante(codigo));
+							estanteTemp.Insertar(producto);
+							this.almacen.set(obtenerNumeracionEstante(codigo), estanteTemp); 
 							
 						}else{
+							codigo = producto.getCodigo();
 							this.almacen.add(estante);
 						}
+						
 					}
 				}else{
 					return almacenTemp;
@@ -446,35 +468,23 @@ public class Inventario {
 		
 	}
 
-	public List<ColaProductos> actualizarAlmacen(List<ColaProductos> almT, List<ColaProductos> almP){
-		
-		iter = almP.listIterator();
-		try{
-			while(iter.hasNext()){
-				estante = iter.next();
-				almT.add(estante);
-				}
-		}catch(Exception e){
-			
-			System.out.println(e.toString());
-			
-		}
-		return almT;
-	}
+
 	
 	public void verInventario(){
-		estante = new ColaProductos();
-		iterator = this.almacen.listIterator();
+		auxEstante = new ColaProductos();
+		aux = new Producto();
+		
 		
 		try {
+			this.almacen = new ArrayList<>();
 			this.almacen = cargarTxt();
+			iterator = this.almacen.listIterator();
 			
 			while(iterator.hasNext()){
-				estante = iterator.next();
-				producto = estante.FrenteCola();
-				
-				System.out.println("Nombre: "+producto.getNombre()+", Codigo: "+producto.getCodigo()+", Precio:"+producto.getPrecio()+", Cantidad: "+estante.cantidadProducto());
-				
+				auxEstante = iterator.next();
+				aux = auxEstante.FrenteCola();
+				System.out.println("Nombre: "+aux.getNombre()+", Codigo: "+aux.getCodigo()+", Precio: $"+aux.getPrecio()+", Peso: "+aux.getPeso()+"kg"+", Cantidad: "+auxEstante.cantidadProducto());
+
 			}
 			
 		} catch (Exception e) {
@@ -501,7 +511,7 @@ public class Inventario {
 	public void continuar() throws IOException {
 		String op;
 		in = new Scanner(System.in);
-		System.out.println("Digite 1 para continuar o 0 para salir");
+		System.out.println("\n\nDigite 1 para volver al menu anterior o 0 para salir");
 		op = in.nextLine();
 		if(validarNumero(op)){
 			if(op.equals(0)){
