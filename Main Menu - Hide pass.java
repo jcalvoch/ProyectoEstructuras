@@ -5,8 +5,9 @@
 import java.io.*;
 import java.util.Scanner;
 
-public class MenuInicial {
+public class main {
 	
+	static String pwd;
 	static String valor;
 	static String specialChars = "/*!@#$%^&*()\"{}_[]|\\?/<>,.";
 	static String menuAdmin = "\n1.Inventario\n"
@@ -30,6 +31,7 @@ public class MenuInicial {
 		
 		System.out.println("Bienvenido a Veterinaria VetClinic");
 		System.out.println("Por favor ingrese su usuario y contraseña");
+		ReadPass();
 		Login();
     }  
  
@@ -43,7 +45,7 @@ public class MenuInicial {
         
         if (username.equalsIgnoreCase("Administrador")) {
         	
-        	if (password.equals("password")) {
+        	if (password.equals(pwd)) {
         		        	
         		System.out.println("Usuario Actual "+username);
         		AdminMenu();
@@ -61,7 +63,7 @@ public class MenuInicial {
         
         else if (username.equalsIgnoreCase("Medico")) {
         	
-        	if (password.equals("password")) {
+        	if (password.equals(pwd)) {
         		System.out.println("Usuario Actual "+username);
         		MedMenu();
         	}
@@ -77,7 +79,7 @@ public class MenuInicial {
         
         else if (username.equalsIgnoreCase("Dependiente")) {
         	
-        	if (password.equals("password")) {
+        	if (password.equals(pwd)) {
         		System.out.println("Usuario Actual "+username);
         		DepMenu();
         	}
@@ -175,17 +177,17 @@ public class MenuInicial {
 				switch(opcion){
 				
 				case 1:
-					this.Inventario();
+					//this.Inventario();
 					
 					continuar();
 					break;
 				case 2:
-					this.Clientes();
+					//this.Clientes();
 					
 					continuar();
 					break;
 				case 3:
-					this.Citas();
+					//Citas();
 					
 					continuar();
 					break;
@@ -194,7 +196,7 @@ public class MenuInicial {
 					
 					break;
 				case 5:
-					this.Facturar();
+					//this.Facturar();
 					
 					break;
 									
@@ -231,17 +233,17 @@ public class MenuInicial {
 				switch(opcion){
 				
 				case 1:
-					this.Inventario();
+					//this.Inventario();
 					
 					continuar();
 					break;
 				case 2:
-					this.Clientes();
+					//this.Clientes();
 					
 					continuar();
 					break;
 				case 3:
-					this.Citas();
+					//this.Citas();
 					
 					continuar();
 					break;
@@ -280,12 +282,12 @@ public class MenuInicial {
 				switch(opcion){
 				
 				case 1:
-					this.Inventario();
+					//this.Inventario();
 					
 					continuar();
 					break;
 				case 2:
-					this.Clientes();
+					//this.Clientes();
 					
 					continuar();
 					break;
@@ -296,7 +298,7 @@ public class MenuInicial {
 					break;
 				
 				case 4:
-					this.Facturar();
+					//this.Facturar();
 					
 					break;
 									
@@ -311,6 +313,20 @@ public class MenuInicial {
 		}
     	
     }
+    
+public static void ReadPass() throws IOException {
+		
+		
+		Scanner s2 = new Scanner (new File ("C:/Users/luissilv/Desktop/password.txt"));
+		
+		
+  					  					
+              pwd= s2.next();
+  				
+			s2.close();
+			
+        }
+	
     
     public static boolean opcionValida(String in){
 		return (!specialChars.contains(in) || in.matches("[0-9]+"));
