@@ -5,18 +5,28 @@ public class Producto {
 	public String codigo;
 	public String tipo;
 	public double precio;
+	public double peso;
 
 	
 	public Producto(){}
 	
-	public Producto(String nomb, String cod, String tpo, double pre){
+	public Producto(String nomb, String cod, String tpo, double pre, double pes){
 
 		nombre = nomb;
 		codigo = cod;
 		tipo = tpo;
 		precio = pre;
+		peso= pes;
 	}
 
+	public double getPeso() {
+		return peso;
+	}
+
+	public void setPeso(double peso) {
+		this.peso = peso;
+	}
+	
 	
 	public String getCodigo() {
 		return codigo;
