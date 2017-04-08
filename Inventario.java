@@ -113,6 +113,9 @@ public class Inventario {
 				System.out.println("Digite el precio del articulo: ");
 				producto.setPrecio(in.nextDouble());
 				
+				System.out.println("Digite el peso del articulo: ");
+				producto.setPeso(in.nextDouble());
+				
 				auxEstante = this.almacen.get(obtenerNumeracionEstante(valor));
 				
 				auxEstante.Insertar(producto);
