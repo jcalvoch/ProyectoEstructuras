@@ -63,12 +63,13 @@ public class ColaProductos {
 	}
 	
 	public int cantidadProducto(){
-		int f = fin;
-		if(!ColaVacia()){
-			return f+1;
+		if(!ColaVacia() && frente == 0){
+			return (fin+1);
 		
-		}else{
+		}else if (frente == fin){
 			return 0;
+		}else{
+			return ((fin+2) - frente);
 		}
 	}
 	
