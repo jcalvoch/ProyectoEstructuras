@@ -69,7 +69,7 @@ public class ColaProductos {
 		}else if (frente == fin){
 			return 0;
 		}else{
-			return ((fin+2) - frente);
+			return ((fin+1) - frente);
 		}
 	}
 	
