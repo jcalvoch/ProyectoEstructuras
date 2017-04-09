@@ -102,27 +102,19 @@ public class Inventario {
 				
 				System.out.println("Codigo encontrado.....\n");
 				
-				producto.setCodigo(valor);
-				
-				System.out.println("Digite el nombre del articulo: ");
-				producto.setNombre(in.nextLine());
-				
-				System.out.println("Digite el tipo del articulo: ");
-				producto.setTipo(in.nextLine());
-					
-				System.out.println("Digite el precio del articulo: ");
-				producto.setPrecio(in.nextDouble());
-				
-				System.out.println("Digite el peso del articulo: ");
-				producto.setPeso(in.nextDouble());
+				producto = obtenerEstante(valor).FrenteCola();
 				
 				auxEstante = this.almacen.get(obtenerNumeracionEstante(valor));
 				
-				auxEstante.Insertar(producto);
+				System.out.println("Digite la cantidad de articulos: ");
+				int cantidad = in.nextInt();
+				
+				for(int i=cantidad; i>0;i--){
+					auxEstante.Insertar(producto);  
+				}
 				
 				this.almacen.set(obtenerNumeracionEstante(valor),auxEstante);
 				guardarTxt();
-				
 				
 			}else{
 				
