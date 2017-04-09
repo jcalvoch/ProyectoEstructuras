@@ -164,7 +164,7 @@ public class Inventario {
 			if (buscarProducto(datos)){
 				producto = this.almacen.get(obtenerNumeracionEstante(datos)).Eliminar();
 				actualizarTxt();
-				System.out.println("Articulo: "+producto.getNombre()+", eliminado exitosamente"+". Cantidad restante: "+obtenerEstante(datos).cantidadProducto()+"\n");
+				System.out.println("Articulo: "+producto.getNombre()+", eliminado exitosamente"+". Cantidad restante: "+(obtenerEstante(datos).cantidadProducto()-1)+"\n");
 				
 			}else{
 				System.out.println("El articulo no existe, o tiene un codigo/nombre diferente");
