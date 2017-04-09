@@ -156,15 +156,34 @@ public class Inventario {
 	
 	public void eliminarProducto(){
 		producto = new Producto();
+		auxEstante = new ColaProductos();
 		
 		try{
 			System.out.println("Digite el codigo o el nombre del articulo: ");
 			datos = in.nextLine();
 		
 			if (buscarProducto(datos)){
-				producto = this.almacen.get(obtenerNumeracionEstante(datos)).Eliminar();
+				System.out.println("Digite la cantidad de articulos: ");
+				int canti = in.nextInt();
+				
+				while (canti > this.almacen.get(obtenerNumeracionEstante(datos)).cantidadProducto()){
+					System.out.println("La cantidad ingresada excede el inventario disponible\n");
+					System.out.println("Digite la cantidad de articulos: ");
+					canti = in.nextInt();
+				}
+				
+				if (canti == this.almacen.get(obtenerNumeracionEstante(datos)).cantidadProducto()){
+					this.almacen.remove(obtenerNumeracionEstante(datos));
+				}else{
+					auxEstante = this.almacen.get(obtenerNumeracionEstante(datos));
+					for(int i = canti; i>0; i--){
+						producto = auxEstante.Eliminar();
+					}
+					this.almacen.set(obtenerNumeracionEstante(datos), auxEstante);
+				}
+				
 				actualizarTxt();
-				System.out.println("Articulo: "+producto.getNombre()+", eliminado exitosamente"+". Cantidad restante: "+(obtenerEstante(datos).cantidadProducto()-1)+"\n");
+				System.out.println("Articulo: "+producto.getNombre()+", eliminado exitosamente"+". Cantidad restante: "+(obtenerEstante(datos).cantidadProducto())+"\n");
 				
 			}else{
 				System.out.println("El articulo no existe, o tiene un codigo/nombre diferente");
