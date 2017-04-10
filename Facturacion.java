@@ -228,7 +228,7 @@ public class Facturacion {
 			guardarFactureroHoy();
 			
 			
-			System.out.println("\n\nCliente: "+this.factura.getNombre()+"Factura #"+contFacturas+"    Fecha: "+this.factura.getFecha().toString()+"\n");
+			System.out.println("\n\nCliente: "+this.factura.getNombre()+"    Factura #"+this.contFacturas+"    Fecha: "+this.factura.getFecha().toString()+"\n");
 			
 			String format = "|%1$-50s|%2$-20s|%3$-20s|%4$-20s|\n";
 			System.out.format(format, "Articulo","Cantidad","Precio","Subtotal");
@@ -584,6 +584,22 @@ public class Facturacion {
 		}
 		
 	}
+	
+	
+	public Items reporteServicioEstetica(){
+		
+		try{
+			for(int i=0; i<factureroDiario.lenght; i++){
+			
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	
+	}
+	
 	
 	
 }
