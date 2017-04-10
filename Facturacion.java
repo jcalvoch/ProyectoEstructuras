@@ -235,14 +235,14 @@ public class Facturacion {
 			
 			for(Items articulo:factura.facturables){
 				if (articulo != null){
-					System.out.format(format, articulo.getDescripcion(),articulo.getCantidad(),("¢"+articulo.getPrecio()),("¢"+articulo.calcularSubtotal()));
+					System.out.format(format, articulo.getDescripcion(),articulo.getCantidad(),("Â¢"+articulo.getPrecio()),("Â¢"+articulo.calcularSubtotal()));
 				}				
 			}
 				System.out.println("\n\n");
-				System.out.format("%1$-15s|¢%2$-10s|\n", "Subtotal:",this.factura.getSubtotal());
-				System.out.format("%1$-15s|¢%2$-10s|\n", "Descuento",this.factura.getDescuento());
-				System.out.format("%1$-15s|¢%2$-10s|\n", "Impuesto 13%",this.factura.getImpuesto());
-				System.out.format("%1$-15s|¢%2$-10s|\n", "Total",this.factura.getTotal());
+				System.out.format("%1$-15s|Â¢%2$-10s|\n", "Subtotal:",this.factura.getSubtotal());
+				System.out.format("%1$-15s|Â¢%2$-10s|\n", "Descuento",this.factura.getDescuento());
+				System.out.format("%1$-15s|Â¢%2$-10s|\n", "Impuesto 13%",this.factura.getImpuesto());
+				System.out.format("%1$-15s|Â¢%2$-10s|\n", "Total",this.factura.getTotal());
 				
 			
 		}catch(Exception e){
@@ -262,8 +262,8 @@ public class Facturacion {
 	public boolean masItemsFactura(){
 		
 		do{
-			System.out.println("\n\nDesea añadir mas productos o servicios a esta factura?\n"
-					+ "ingrese 1 para añadir mas o 2 para finalizar la factura");
+			System.out.println("\n\nDesea aÃ±adir mas productos o servicios a esta factura?\n"
+					+ "ingrese 1 para aÃ±adir mas o 2 para finalizar la factura");
 			opMas = in.nextInt();
 		}while(opMas != 1 && opMas != 2);
 		
@@ -449,6 +449,10 @@ public class Facturacion {
 						if (fechaFactura == (LocalDate.parse((valores[10]+"-"+valores[11]+"-"+valores[12]),DateTimeFormatter.ofPattern("yyyy-MM-dd")))){
 							factureroDiario[posFactura++] = factura;
 							
+						}else if (numeroFactura == Integer.parseInt(valores[4])){
+							posFactura++;
+						}else{
+							numeroFactura = Integer.parseInt(valores[4]);
 						}
 						
 					}
