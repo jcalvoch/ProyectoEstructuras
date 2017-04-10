@@ -548,7 +548,10 @@ public class Facturacion {
 				}finally{ 
 					   
 					try{
-					
+						this.contFacturas = 0;
+						for(int i = 0; i < this.factureroDiario.length; i++){
+							this.contFacturas++;	
+						}
 						if(bw!=null)
 						bw.close();
 					
