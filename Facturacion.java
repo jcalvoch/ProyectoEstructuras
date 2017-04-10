@@ -422,6 +422,9 @@ public class Facturacion {
 						
 						factura = new Factura();
 						String [] valores = linea.split("-");
+						
+						if (fechaFactura == (LocalDate.parse((valores[10]+"-"+valores[11]+"-"+valores[12]),DateTimeFormatter.ofPattern("yyyy-MM-dd")))){
+							
 						factureroDiario[posFactura] = new Factura();
 						factureroDiario[posFactura].facturables[posItems] = new Items();
 						factureroDiario[posFactura].facturables[posItems].setCodigo(valores[0]);
@@ -446,11 +449,8 @@ public class Facturacion {
 							codigo = valores[0];
 						}
 						
-						if (fechaFactura == (LocalDate.parse((valores[10]+"-"+valores[11]+"-"+valores[12]),DateTimeFormatter.ofPattern("yyyy-MM-dd")))){
+						}if (numeroFactura == Integer.parseInt(valores[4])){
 							factureroDiario[posFactura++] = factura;
-							
-						}else if (numeroFactura == Integer.parseInt(valores[4])){
-							posFactura++;
 						}else{
 							numeroFactura = Integer.parseInt(valores[4]);
 						}
