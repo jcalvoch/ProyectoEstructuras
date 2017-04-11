@@ -1,1 +1,280 @@
+import java.util.Scanner;
+
+public class Main {
+	FichaCliente fichaCliente;
+	FichaMascota fichaMascota;
+	
+	public void menuCliente(String User)
+	{
+		String menu = "\n1. Agregar Cliente\n2. Eliminar Cliente\n3. Consultar Clientes\n4.Mascotas\n5. Volver al menú principal";
+		Scanner sc = new Scanner(System.in);
+		int opcionMenuPrincipal;
+		System.out.println(menu);
+		opcionMenuPrincipal = sc.nextInt();
+		switch(opcionMenuPrincipal)
+		{
+		case 1: 
+			agregarCliente();
+			break;
+		case 2: 
+			eliminarCliente();
+			break;
+		case 3:
+			consultarCliente();
+			break;
+		case 4:
+			menuMascota();
+			break;
+		case 5:
+			main.VolverMenuPrincipal(user);
+			break;
+		
+		}
+		sc.close();			
+		
+		
+	}
+	
+	public void menuMascota()
+	{
+		Scanner sc = new Scanner(System.in);
+		String menu = "\n1. Agregar Mascota\n2. Eliminar Mascota\n3. Consultar mascotas\n4. Volver al menú principal";
+		int opcionMenuMascota;
+		System.out.println(menu);
+		opcionMenuMascota = sc.nextInt();
+		switch(opcionMenuMascota)
+		{
+		case 1: 
+			agregarMascota();
+			break;
+		case 2: 
+			eliminarMascota();
+			break;
+		case 3:
+			consultarMascotas();
+			break;
+		case 4:
+			menuCliente();
+		break;
+		}
+		sc.close();			
+		
+		
+	}
+	
+	public  void agregarCliente()
+	{
+		Cliente cliente = new Cliente();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Digite el nombre del cliente");			
+		cliente.Nombre(sc.next());
+		System.out.println("Digite el apellido del cliente");
+		cliente.Apellido(sc.next());
+		System.out.println("Digite la cédula del cliente");
+		cliente.Cedula(sc.nextInt());
+		System.out.println("Digite la dirección del cliente");
+		cliente.Direccion(sc.next());
+		sc.close();
+		if (fichaCliente == null)
+		{
+			fichaCliente = new FichaCliente(cliente);
+		}
+		else
+		{
+			fichaCliente = new FichaCliente(cliente, fichaCliente);
+		}
+		System.out.println("El cliente ha sido agregado exitosamente");
+		menuCliente();
+		
+	}
+	
+	public void eliminarCliente()
+	{
+		if (fichaCliente == null)
+		{
+			System.out.println("No se encuentran clientes registrados");
+		}
+		else
+		{
+			Scanner sc = new Scanner(System.in);
+			int cedula;
+			System.out.println("Digite la cédula del cliente que se desea eliminar");
+			cedula = sc.nextInt();
+			FichaCliente fc = fichaCliente;
+			
+			if (fc.getDato().getCedula() == cedula)
+			{
+				fichaCliente = fichaCliente.getEnlace();
+				System.out.println("El cliente ha sido eliminado");
+			}
+			else
+			{
+				while (fichaCliente != null)
+				{
+					if (fc.getEnlace().getDato().getCedula() == cedula)
+					{
+						fc.setEnlace(fc.getEnlace().getEnlace());
+						System.out.println("El cliente ha sido eliminado");
+						break;
+					}
+					fc = fc.getEnlace();
+					menuCliente();
+				}
+			}
+
+			
+		}
+	}
+	
+	public void consultarCliente()
+	{
+		FichaCliente fc = fichaCliente;
+		while (fc != null)
+		{
+			System.out.println(fc.getDato().getCedula() + ": " + fc.getDato().getNombre() + " " + fc.getDato().getApellido() + "\n");
+			fc = fc.getEnlace();
+		}
+		menuCliente();
+		
+	}
+	
+	
+	public  void agregarMascota()
+	{
+		int cedula;
+		Mascota mascota = new Mascota();
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Digite la cédula del cliente");			
+		cedula = sc.nextInt();
+		System.out.println("Digite el id de la mascota");
+		mascota.NumMascota(sc.nextInt());
+		System.out.println("Digite el nombre de la mascota");
+		mascota.Nombre(sc.next());
+
+		sc.close();
+		
+		FichaCliente fc = fichaCliente;
+		while (fc != null)
+		{
+			if (fc.getDato().getCedula() == cedula)
+				break;
+			fc = fc.getEnlace();
+		}
+		
+		if (fc.getDato().getCedula() == cedula)
+		{
+			if (fc.getMascota() == null)
+			{
+				fc.setMascota(mascota);
+				System.out.println("La mascota ha sido agregada exitosamente");
+
+			}
+			else
+			{
+				fc.setMascota(mascota, fc.getMascota());
+			}
+			System.out.println("La mascota ha sido agregada exitosamente");
+		}
+		else
+		{
+			System.out.println("No se encontró el cliente");
+		}
+
+		menuCliente();
+		
+	}
+	
+	public void eliminarMascota()
+	{
+		if (fichaCliente == null)
+		{
+			System.out.println("No se encuentran clientes registrados");
+		}
+		else
+		{
+			Scanner sc = new Scanner(System.in);
+			int cedula;
+			int numMascota;
+			System.out.println("Digite la cédula del cliente");
+			cedula = sc.nextInt();
+			System.out.println("Digite el número de la mascota");
+			numMascota = sc.nextInt();
+			FichaCliente fc = fichaCliente;
+			sc.close();
+
+			while (fc != null)
+			{
+				if (fc.getDato().getCedula() == cedula)
+					break;
+				fc = fc.getEnlace();
+			}
+			
+			if (fc.getMascota().getDato().getnumMascota() == numMascota)
+			{
+				fc.setMascota(fc.getMascota().getEnlace().getDato());
+			}
+			else
+			{
+				FichaMascota fm = fc.getMascota();
+				while (fm != null)
+				{
+					if (fm.getEnlace().getDato().getnumMascota() == numMascota)
+					{
+						fm.setEnlace(fm.getEnlace().getEnlace()); 
+						System.out.println("La mascota ha sido eliminada");
+					}
+				}
+			}
+
+			}
+			
+	}
+	
+	public void consultarMascotas()
+	{
+		Scanner sc = new Scanner(System.in);
+		int cedula;
+		System.out.println("Digite la cédula del cliente");
+		cedula = sc.nextInt();
+		FichaCliente fc = fichaCliente;
+		
+		while (fc != null)
+		{
+			if (fc.getDato().getCedula() == cedula)
+				break;
+			fc = fc.getEnlace();
+		}
+		
+		FichaMascota fm = fc.getMascota();
+		
+		while (fm != null)
+		{
+			System.out.println("\nNúmero de mascota: " + fm.getDato().getnumMascota() + ", Nombre: " + fm.getDato().getNombre());
+			fm = fm.getEnlace();
+		}
+		menuCliente();
+	}
+			
+		public boolean validarCliente(int cedula)
+		{
+			boolean resultado = false;
+			FichaCliente fc = fichaCliente;
+			while (fc != null)
+			{
+				if (fc.getDato().getCedula() == cedula)
+				{
+					resultado = true;
+				}
+				fc = fc.getEnlace();
+			}
+			return resultado;
+		}
+		
+	public static void main(String[] args) {
+		
+
+	}
+			
+
+}
 
