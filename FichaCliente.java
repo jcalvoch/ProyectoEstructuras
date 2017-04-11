@@ -1,8 +1,12 @@
+import java.util.Scanner;
+
 public class FichaCliente 
 {
 		private Cliente dato;
 		private FichaCliente enlace;
 		private FichaMascota mascotas;
+		
+
 		
 		public FichaCliente(Cliente c)
 		{
@@ -32,6 +36,11 @@ public class FichaCliente
 		}
 		
 		public void setMascota(Mascota m)
+		{
+			mascotas = new FichaMascota(m);
+		}
+		
+		public void setMascota(Mascota m, FichaMascota fm)
 		{
 			mascotas = new FichaMascota(m, mascotas);
 		}
