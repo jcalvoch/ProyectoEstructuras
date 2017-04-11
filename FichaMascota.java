@@ -1,9 +1,8 @@
-
 public class FichaMascota 
 {
 	private Mascota dato;
 	private FichaMascota enlace;
-	private FichaMedicamento medicamentos;
+	private FichaTratamiento tratamientos;
 	
 	public FichaMascota(Mascota c)
 	{
@@ -32,14 +31,14 @@ public class FichaMascota
 		enlace = e;
 	}
 	
-	public void setMedicamento(Medicamento m)
+	public void setMedicamento(Tratamiento t)
 	{
-		medicamentos = new FichaMedicamento(m, medicamentos);
+		tratamientos = new FichaTratamiento(t, tratamientos);
 	}
 	
-	public FichaMedicamento getMedicamentos()
+	public FichaTratamiento getMedicamentos()
 	{
-		return medicamentos;
+		return tratamientos;
 	}
 
 }
